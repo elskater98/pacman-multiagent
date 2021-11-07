@@ -18,6 +18,7 @@ import random, util
 
 from game import Agent
 
+
 class ReflexAgent(Agent):
     """
     A reflex agent chooses an action at each choice point by examining
@@ -27,7 +28,6 @@ class ReflexAgent(Agent):
     it in any way you see fit, so long as you don't touch our method
     headers.
     """
-
 
     def getAction(self, gameState):
         """
@@ -45,7 +45,7 @@ class ReflexAgent(Agent):
         scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
         bestScore = max(scores)
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
-        chosenIndex = random.choice(bestIndices) # Pick randomly among the best
+        chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
 
         "Add more of your code here if you want to"
 
@@ -68,13 +68,47 @@ class ReflexAgent(Agent):
         """
         # Useful information you can extract from a GameState (pacman.py)
         childGameState = currentGameState.getPacmanNextState(action)
-        newPos = childGameState.getPacmanPosition()
+        newPos = childGameState.getPacmanPosition()  # pacman position
         newFood = childGameState.getFood()
         newGhostStates = childGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
-        return childGameState.getScore()
+        total_score = 0.0  # our score
+        old_food = currentGameState.getFood()  # Grid of boolean food indicator variables.
+
+        # Guide pacman in positions closer to food
+        # Iterates old_food matrix
+        for x in range(old_food.width):
+            for y in range(old_food.height):
+                if old_food[x][y]:  # check if in position (x,y) of the matrix has a food
+                    # compute distance between food and new pacman position
+                    d = manhattanDistance((x, y), newPos)
+                    if d == 0:
+                        total_score += 100
+                    else:
+                        total_score += 1.0 / (d * d)
+
+        # Function to calculate distance between ghost
+        for ghost in newGhostStates:
+            # compute distance between ghost and new pacman position
+            d = manhattanDistance(ghost.getPosition(), newPos)
+            if d <= 1:
+                if ghost.scaredTimer != 0:
+                    total_score += 2000
+                else:
+                    total_score -= 200
+
+        # Function to get the capsule
+        for capsule in currentGameState.getCapsules():
+            d = manhattanDistance(capsule, newPos)
+            if d == 0:
+                total_score += 1000
+            else:
+                total_score += 1.0 / (d * d)
+
+        return total_score
+
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -85,6 +119,7 @@ def scoreEvaluationFunction(currentGameState):
     (not reflex agents).
     """
     return currentGameState.getScore()
+
 
 class MultiAgentSearchAgent(Agent):
     """
@@ -101,10 +136,11 @@ class MultiAgentSearchAgent(Agent):
     is another abstract class.
     """
 
-    def __init__(self, evalFn = 'scoreEvaluationFunction', depth = '2'):
-        self.index = 0 # Pacman is always agent index 0
+    def __init__(self, evalFn='scoreEvaluationFunction', depth='2'):
+        self.index = 0  # Pacman is always agent index 0
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
+
 
 class MinimaxAgent(MultiAgentSearchAgent):
     """
@@ -137,6 +173,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
+
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
     Your minimax agent with alpha-beta pruning (question 3)
@@ -148,6 +185,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
+
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
@@ -164,6 +202,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
+
 def betterEvaluationFunction(currentGameState):
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
@@ -172,7 +211,8 @@ def betterEvaluationFunction(currentGameState):
     DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()    
+    util.raiseNotDefined()
+
 
 # Abbreviation
 better = betterEvaluationFunction
