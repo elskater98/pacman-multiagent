@@ -11,10 +11,9 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-
 from util import manhattanDistance
 from game import Directions
-import random, util
+import random, util, sys
 
 from game import Agent
 
@@ -141,6 +140,9 @@ class MultiAgentSearchAgent(Agent):
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
 
+    def terminalTest(self, gameState, depth):
+        return depth == 0 or gameState.isWin() or gameState.isLose()
+
 
 class MinimaxAgent(MultiAgentSearchAgent):
     """
@@ -171,7 +173,53 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        value = float("-inf")
+        actions = []
+
+        for action in gameState.getLegalActions(0):
+            u = self.min_value(
+                game_state=gameState.getNextState(0, action),
+                agent=1,
+                depth=self.depth
+            )
+            if u == value:
+                actions.append(action)
+            elif u >= value:
+                value = u
+                actions = [action]
+
+        return random.choice(actions)
+
+    def min_value(self, game_state, agent, depth):
+        if self.terminalTest(game_state, depth):
+            return self.evaluationFunction(game_state)
+
+        value = float("inf")
+
+        for action in game_state.getLegalActions(agent):
+            succ = game_state.getNextState(agent, action)
+            if agent == game_state.getNumAgents() - 1:
+                value = min(value, self.max_value(succ, agent=0, depth=depth - 1))
+            else:
+                # You are in the same level because there are more than one ghost
+                # so they perform as a team (same depth).
+                value = min(value, self.min_value(succ, agent=agent + 1, depth=depth))
+        return value
+
+    def max_value(self, game_state, agent, depth):
+        if self.terminalTest(game_state, depth):
+            return self.evaluationFunction(game_state)
+
+        value = float("-inf")
+
+        for action in game_state.getLegalActions(agent):
+            value = max(value, self.min_value(
+                game_state.getNextState(agent, action),
+                agent=1,
+                depth=depth
+            ))
+        return value
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
