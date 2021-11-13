@@ -315,6 +315,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
                 values.append(self.max_value(gameState.getNextState(agent, action), 0, depth - 1))
             else:
                 values.append(self.expectation_value(gameState.getNextState(agent, action), agent + 1, depth))
+        return sum(values) / float(len(values))
 
     def max_value(self, gameState, agent, depth):
         if self.terminalTest(gameState, depth):
