@@ -232,7 +232,52 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        value = float("-inf")
+        actions = []
+        alpha = float("-inf")
+        beta = float("inf")
+
+        for action in gameState.getLegalActions(0):
+            u = self.min_value(gameState.getNextState(0, action), 1, self.depth, alpha, beta)
+            if u == value:
+                actions.append(action)
+            elif u > value:
+                value = u
+                actions = [action]
+
+            alpha = max(alpha, value)
+        return random.choice(actions)
+
+    def min_value(self, gameState, agent, depth, alpha, beta):
+        if self.terminalTest(gameState, depth):
+            return self.evaluationFunction(gameState)
+
+        value = float("inf")
+        for action in gameState.getLegalActions(agent):
+            if agent == gameState.getNumAgents() - 1:
+                value = min(value, self.max_value(gameState.getNextState(agent, action), 0, depth - 1, alpha, beta))
+            else:
+                value = min(value, self.min_value(gameState.getNextState(agent, action), agent + 1, depth, alpha, beta))
+
+            if value < alpha:
+                return value
+            beta = min(beta, value)
+
+        return value
+
+    def max_value(self, gameState, agent, depth, alpha, beta):
+        if self.terminalTest(gameState, depth):
+            return self.evaluationFunction(gameState)
+
+        value = float("-inf")
+
+        for action in gameState.getLegalActions(agent):
+            value = max(value, self.min_value(gameState.getNextState(agent, action), 1, depth, alpha, beta))
+            if value > beta:
+                return value  # prunning because min(beta, v) always will be beta
+            alpha = max(alpha, value)  # otherwise, update
+
+        return value
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
