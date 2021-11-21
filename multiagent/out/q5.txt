@@ -1,0 +1,51 @@
+Starting on 11-21 at 13:21:26
+
+Question q5
+===========
+
+Pacman emerges victorious! Score: 1133
+Pacman emerges victorious! Score: 1257
+Pacman emerges victorious! Score: 1031
+Pacman emerges victorious! Score: 1103
+Pacman emerges victorious! Score: 1117
+Pacman emerges victorious! Score: 1303
+Pacman emerges victorious! Score: 1127
+Pacman emerges victorious! Score: 1250
+Pacman emerges victorious! Score: 1135
+Pacman emerges victorious! Score: 1028
+Average Score: 1148.4
+Scores:        1133.0, 1257.0, 1031.0, 1103.0, 1117.0, 1303.0, 1127.0, 1250.0, 1135.0, 1028.0
+Win Rate:      10/10 (1.00)
+Record:        Win, Win, Win, Win, Win, Win, Win, Win, Win, Win
+*** PASS: test_cases/q5/grade-agent.test (6 of 6 points)
+***     1148.4 average score (2 of 2 points)
+***         Grading scheme:
+***          < 500:  0 points
+***         >= 500:  1 points
+***         >= 1000:  2 points
+***     10 games not timed out (1 of 1 points)
+***         Grading scheme:
+***          < 0:  fail
+***         >= 0:  0 points
+***         >= 10:  1 points
+***     10 wins (3 of 3 points)
+***         Grading scheme:
+***          < 1:  fail
+***         >= 1:  1 points
+***         >= 5:  2 points
+***         >= 10:  3 points
+
+### Question q5: 6/6 ###
+
+
+Finished at 13:21:31
+
+Provisional grades
+==================
+Question q5: 6/6
+------------------
+Total: 6/6
+
+Your grades are NOT yet registered.  To register your grades, make sure
+to follow your instructor's guidelines to receive credit on your project.
+

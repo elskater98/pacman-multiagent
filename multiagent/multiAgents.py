@@ -11,11 +11,11 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-from util import manhattanDistance
-from game import Directions
-import random, util, sys
+import random
+import util
 
 from game import Agent
+from util import manhattanDistance
 
 
 class ReflexAgent(Agent):
@@ -64,13 +64,18 @@ class ReflexAgent(Agent):
 
         Print out these variables to see what you're getting, then combine them
         to create a masterful evaluation function.
+
+        RUN COMMANDS:
+        python pacman.py -p ReflexAgent -l testClassic
+        python pacman.py --frameTime 0 -p ReflexAgent -k 1 -q -n 100
+        python pacman.py --frameTime 0 -p ReflexAgent -k 2 -q -n 100
+        python autograder.py -q q1 --no-graphics
         """
+
         # Useful information you can extract from a GameState (pacman.py)
         childGameState = currentGameState.getPacmanNextState(action)
         newPos = childGameState.getPacmanPosition()  # pacman position
-        newFood = childGameState.getFood()
         newGhostStates = childGameState.getGhostStates()
-        newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
         total_score = 0.0  # our score
@@ -171,8 +176,13 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         gameState.isLose():
         Returns whether or not the game state is a losing state
+
+        RUN COMMANDS:
+        python pacman.py -p MinimaxAgent -l trappedClassic -a depth=3 -q -n 100
+        python pacman.py -p MinimaxAgent -l minimaxClassic -a depth=4
+        python pacman.py -p MinimaxAgent -l mediumClassic depth=4
+        python autograder.py -q q2 --no-graphics
         """
-        "*** YOUR CODE HERE ***"
 
         value = float("-inf")
         actions = []
@@ -225,15 +235,18 @@ class MinimaxAgent(MultiAgentSearchAgent):
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
     Your minimax agent with alpha-beta pruning (question 3)
+
+    RUN COMMANDS:
+    python pacman.py -p AlphaBetaAgent -a depth=3 -l smallClassic
+    python autograder.py -q q3 --no-graphics
     """
 
     def getAction(self, gameState):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        "*** YOUR CODE HERE ***"
-        value = float("-inf")
         actions = []
+        value = float("-inf")
         alpha = float("-inf")
         beta = float("inf")
 
@@ -291,8 +304,13 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
         All ghosts should be modeled as choosing uniformly at random from their
         legal moves.
+
+        RUN COMMANDS:
+        python pacman.py -p ExpectimaxAgent -l minimaxClassic -a depth=3
+        python pacman.py -p ExpectimaxAgent -l trappedClassic -a depth=3 -q -n 10
+        python autograder.py -q q4 --no-graphics
         """
-        "*** YOUR CODE HERE ***"
+
         value = float("-inf")
         actions = []
         for action in gameState.getLegalActions(0):
@@ -333,9 +351,40 @@ def betterEvaluationFunction(currentGameState):
     evaluation function (question 5).
 
     DESCRIPTION: <write something here so we know what you did>
+
+    RUN COMMANDS:
+    python autograder.py -q q5
+    python autograder.py -q q5 --no-graphics
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    total_score = scoreEvaluationFunction(currentGameState)
+
+    if currentGameState.isWin() or currentGameState.isLose():  # check if the game end
+        return total_score
+
+    # Food
+    food_distance = [1.0 / manhattanDistance(food_pos, currentGameState.getPacmanPosition()) for food_pos in
+                     currentGameState.getFood().asList()]
+
+    if len(food_distance):
+        total_score += max(food_distance)
+
+    # Ghost
+    for ghost in currentGameState.getGhostStates():
+        ghost_distance = manhattanDistance(ghost.getPosition(), currentGameState.getPacmanPosition())
+        if ghost_distance <= 1:
+            if ghost.scaredTimer != 0:
+                total_score += max(60.0/ghost_distance, 0)
+            else:
+                total_score -= max(1.0/ghost_distance, 0)
+
+    # Capsule
+    capsule_disance = [1.0 / manhattanDistance(capsule, currentGameState.getPacmanPosition()) for capsule in
+                       currentGameState.getCapsules()]
+
+    if len(capsule_disance):
+        total_score += max(capsule_disance)
+
+    return total_score
 
 
 # Abbreviation

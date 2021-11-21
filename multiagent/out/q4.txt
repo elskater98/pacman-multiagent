@@ -1,0 +1,45 @@
+Starting on 11-21 at 13:16:45
+
+Question q4
+===========
+
+*** PASS: test_cases/q4/0-eval-function-lose-states-1.test
+*** PASS: test_cases/q4/0-eval-function-lose-states-2.test
+*** PASS: test_cases/q4/0-eval-function-win-states-1.test
+*** PASS: test_cases/q4/0-eval-function-win-states-2.test
+*** PASS: test_cases/q4/0-expectimax1.test
+*** PASS: test_cases/q4/1-expectimax2.test
+*** PASS: test_cases/q4/2-one-ghost-3level.test
+*** PASS: test_cases/q4/3-one-ghost-4level.test
+*** PASS: test_cases/q4/4-two-ghosts-3level.test
+*** PASS: test_cases/q4/5-two-ghosts-4level.test
+*** PASS: test_cases/q4/6-1a-check-depth-one-ghost.test
+*** PASS: test_cases/q4/6-1b-check-depth-one-ghost.test
+*** PASS: test_cases/q4/6-1c-check-depth-one-ghost.test
+*** PASS: test_cases/q4/6-2a-check-depth-two-ghosts.test
+*** PASS: test_cases/q4/6-2b-check-depth-two-ghosts.test
+*** PASS: test_cases/q4/6-2c-check-depth-two-ghosts.test
+*** Running ExpectimaxAgent on smallClassic 1 time(s).
+Pacman died! Score: 84
+Average Score: 84.0
+Scores:        84.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+*** Finished running ExpectimaxAgent on smallClassic after 0 seconds.
+*** Won 0 out of 1 games. Average score: 84.000000 ***
+*** PASS: test_cases/q4/7-pacman-game.test
+
+### Question q4: 5/5 ###
+
+
+Finished at 13:16:46
+
+Provisional grades
+==================
+Question q4: 5/5
+------------------
+Total: 5/5
+
+Your grades are NOT yet registered.  To register your grades, make sure
+to follow your instructor's guidelines to receive credit on your project.
+
