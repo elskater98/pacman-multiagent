@@ -1,4 +1,4 @@
-Starting on 11-21 at 13:16:45
+Starting on 12-27 at 11:05:00
 
 Question q4
 ===========
@@ -32,7 +32,7 @@ Record:        Loss
 ### Question q4: 5/5 ###
 
 
-Finished at 13:16:46
+Finished at 11:05:00
 
 Provisional grades
 ==================

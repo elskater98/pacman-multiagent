@@ -1,4 +1,4 @@
-Starting on 11-21 at 13:16:19
+Starting on 12-27 at 11:04:40
 
 Question q1
 ===========
@@ -37,7 +37,7 @@ Record:        Win, Win, Win, Win, Win, Win, Win, Win, Win, Win
 ### Question q1: 4/4 ###
 
 
-Finished at 13:16:20
+Finished at 11:04:41
 
 Provisional grades
 ==================

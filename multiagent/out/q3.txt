@@ -1,4 +1,4 @@
-Starting on 11-21 at 13:16:40
+Starting on 12-27 at 11:04:54
 
 Question q3
 ===========
@@ -49,7 +49,7 @@ Record:        Loss
 ### Question q3: 5/5 ###
 
 
-Finished at 13:16:40
+Finished at 11:04:55
 
 Provisional grades
 ==================

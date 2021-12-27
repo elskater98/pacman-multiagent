@@ -72,12 +72,10 @@ class ReflexAgent(Agent):
         python autograder.py -q q1 --no-graphics
         """
 
-        # Useful information you can extract from a GameState (pacman.py)
         childGameState = currentGameState.getPacmanNextState(action)
         newPos = childGameState.getPacmanPosition()  # pacman position
         newGhostStates = childGameState.getGhostStates()
 
-        "*** YOUR CODE HERE ***"
         total_score = 0.0  # our score
         old_food = currentGameState.getFood()  # Grid of boolean food indicator variables.
 
@@ -85,8 +83,8 @@ class ReflexAgent(Agent):
         # Iterates old_food matrix
         for x in range(old_food.width):
             for y in range(old_food.height):
-                if old_food[x][y]:  # check if in position (x,y) of the matrix has a food
-                    # compute distance between food and new pacman position
+                if old_food[x][y]:  # Check if in position (x,y) of the matrix has a food
+                    # Compute distance between food and new pacman position
                     d = manhattanDistance((x, y), newPos)
                     if d == 0:
                         total_score += 100
@@ -95,7 +93,7 @@ class ReflexAgent(Agent):
 
         # Function to calculate distance between ghost
         for ghost in newGhostStates:
-            # compute distance between ghost and new pacman position
+            # Compute distance between ghost and new pacman position
             d = manhattanDistance(ghost.getPosition(), newPos)
             if d <= 1:
                 if ghost.scaredTimer != 0:
@@ -151,7 +149,7 @@ class MultiAgentSearchAgent(Agent):
 
 class MinimaxAgent(MultiAgentSearchAgent):
     """
-    Your minimax agent (question 2)
+    Your minimax agent (question 2) Iterative
     """
 
     def getAction(self, gameState):
@@ -191,8 +189,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
             u = self.min_value(
                 game_state=gameState.getNextState(0, action),
                 agent=1,
-                depth=self.depth
-            )
+                depth=self.depth)
+
             if u == value:
                 actions.append(action)
             elif u >= value:
@@ -212,9 +210,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
             if agent == game_state.getNumAgents() - 1:
                 value = min(value, self.max_value(succ, agent=0, depth=depth - 1))
             else:
-                # You are in the same level because there are more than one ghost
-                # so they perform as a team (same depth).
                 value = min(value, self.min_value(succ, agent=agent + 1, depth=depth))
+
         return value
 
     def max_value(self, game_state, agent, depth):
@@ -227,8 +224,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
             value = max(value, self.min_value(
                 game_state.getNextState(agent, action),
                 agent=1,
-                depth=depth
-            ))
+                depth=depth))
+
         return value
 
 
@@ -237,6 +234,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     Your minimax agent with alpha-beta pruning (question 3)
 
     RUN COMMANDS:
+    Slide:  30/71
     python pacman.py -p AlphaBetaAgent -a depth=3 -l smallClassic
     python autograder.py -q q3 --no-graphics
     """
@@ -252,6 +250,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
         for action in gameState.getLegalActions(0):
             u = self.min_value(gameState.getNextState(0, action), 1, self.depth, alpha, beta)
+
             if u == value:
                 actions.append(action)
             elif u > value:
@@ -259,6 +258,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 actions = [action]
 
             alpha = max(alpha, value)
+
         return random.choice(actions)
 
     def min_value(self, gameState, agent, depth, alpha, beta):
@@ -274,6 +274,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
             if value < alpha:
                 return value
+
             beta = min(beta, value)
 
         return value
@@ -287,8 +288,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         for action in gameState.getLegalActions(agent):
             value = max(value, self.min_value(gameState.getNextState(agent, action), 1, depth, alpha, beta))
             if value > beta:
-                return value  # prunning because min(beta, v) always will be beta
-            alpha = max(alpha, value)  # otherwise, update
+                return value
+            alpha = max(alpha, value)
 
         return value
 
@@ -305,16 +306,20 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         All ghosts should be modeled as choosing uniformly at random from their
         legal moves.
 
+        Slide 60/71
+        # https://www.baeldung.com/cs/expectimax-search
+
         RUN COMMANDS:
         python pacman.py -p ExpectimaxAgent -l minimaxClassic -a depth=3
         python pacman.py -p ExpectimaxAgent -l trappedClassic -a depth=3 -q -n 10
         python autograder.py -q q4 --no-graphics
         """
 
-        value = float("-inf")
         actions = []
+        value = float("-inf")
+
         for action in gameState.getLegalActions(0):
-            u = self.expectation_value(gameState.getNextState(0, action), 1, self.depth)
+            u = self.min_value(gameState.getNextState(0, action), 1, self.depth)
             if u == value:
                 actions.append(action)
             elif u > value:
@@ -323,7 +328,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
         return random.choice(actions)
 
-    def expectation_value(self, gameState, agent, depth, ):
+    def min_value(self, gameState, agent, depth):
         if self.terminalTest(gameState, depth):
             return self.evaluationFunction(gameState)
 
@@ -332,8 +337,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             if agent == gameState.getNumAgents() - 1:
                 values.append(self.max_value(gameState.getNextState(agent, action), 0, depth - 1))
             else:
-                values.append(self.expectation_value(gameState.getNextState(agent, action), agent + 1, depth))
-        return sum(values) / float(len(values))
+                values.append(self.min_value(gameState.getNextState(agent, action), agent + 1, depth))
+        return sum(values) / len(values)
 
     def max_value(self, gameState, agent, depth):
         if self.terminalTest(gameState, depth):
@@ -341,7 +346,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
         value = float("-inf")
         for action in gameState.getLegalActions(agent):
-            value = max(value, self.expectation_value(gameState.getNextState(agent, action), 1, depth))
+            value = max(value, self.min_value(gameState.getNextState(agent, action), 1, depth))
         return value
 
 
@@ -356,16 +361,17 @@ def betterEvaluationFunction(currentGameState):
     python autograder.py -q q5
     python autograder.py -q q5 --no-graphics
     """
+
     total_score = scoreEvaluationFunction(currentGameState)
 
-    if currentGameState.isWin() or currentGameState.isLose():  # check if the game end
+    if currentGameState.isWin() or currentGameState.isLose():  # Check if the game end
         return total_score
 
     # Food
     food_distance = [1.0 / manhattanDistance(food_pos, currentGameState.getPacmanPosition()) for food_pos in
                      currentGameState.getFood().asList()]
 
-    if len(food_distance):
+    if food_distance:
         total_score += max(food_distance)
 
     # Ghost
@@ -381,7 +387,7 @@ def betterEvaluationFunction(currentGameState):
     capsule_disance = [1.0 / manhattanDistance(capsule, currentGameState.getPacmanPosition()) for capsule in
                        currentGameState.getCapsules()]
 
-    if len(capsule_disance):
+    if capsule_disance:
         total_score += max(capsule_disance)
 
     return total_score
