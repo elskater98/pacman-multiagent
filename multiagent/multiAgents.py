@@ -12,8 +12,8 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 import random
-import util
 
+import util
 from game import Agent
 from util import manhattanDistance
 
@@ -373,9 +373,9 @@ def betterEvaluationFunction(currentGameState):
         ghost_distance = manhattanDistance(ghost.getPosition(), currentGameState.getPacmanPosition())
         if ghost_distance <= 1:
             if ghost.scaredTimer != 0:
-                total_score += max(60.0/ghost_distance, 0)
+                total_score += max(60.0 / ghost_distance, 0)
             else:
-                total_score -= max(1.0/ghost_distance, 0)
+                total_score -= max(1.0 / ghost_distance, 0)
 
     # Capsule
     capsule_disance = [1.0 / manhattanDistance(capsule, currentGameState.getPacmanPosition()) for capsule in

@@ -1,14 +1,14 @@
-# inteligentSystems
+# Pacman Berkeley
 
 For the first assignment, you have to work on the "PacMan" project. In particular, you must implement the following algorithms:
 
-- Alpha-Beta (recursive): 2.5 points
+- [ ] Mini-Max (iterative): 2.5 points
 
-- Expectimax (recursive): 2.5 points
+- [x] Alpha-Beta (recursive): 2.5 points
 
-- Evaluation function: 2.5 points
+- [x] Expectimax (recursive): 2.5 points
 
-- Mini-Max (iterative): 2.5 points
+- [x] Evaluation function: 2.5 points
 
 As an optional task, you can develop the iterative version of the Alpha-Beta algorithm.
 
